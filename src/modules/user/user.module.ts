@@ -10,6 +10,7 @@ import { User } from './models/user.model';
   // SequelizeModule - за ним ит будемо працювати з БД 
   // forFeature - імпортована логіка використовується лише в рамках даного модулю
   controllers: [UserController],
-  providers: [UserService]
+  providers: [UserService],
+  exports:[UserService]
 })
 export class UserModule {}
