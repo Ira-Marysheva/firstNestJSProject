@@ -3,7 +3,6 @@ import { User } from '../user/models/user.model';
 import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt'
 import { CreateUSerDTO } from './dto';
-import { AppError } from 'src/common/constants/error';
 
 @Injectable()
 export class UserService {
@@ -18,9 +17,6 @@ export class UserService {
   }
 
   async createUser(dto: CreateUSerDTO): Promise<CreateUSerDTO> {
-    const existUser = await this.findUserByEmail(dto.email)
-    if(existUser) throw new BadRequestException(AppError.USER_EXIST)
-
     dto.password = await this.hashPassword(dto.password)
     // вирішення проблеми після длдавання типізації параметра і при створенні користувача
     await this.userRepository.create(
