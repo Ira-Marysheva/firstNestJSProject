@@ -1,7 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString } from "class-validator";
 
-export class CreateUSerDTO {
+const { IsString } = require("class-validator");
+
+export class AuthUserResponse{
     @ApiProperty()
     @IsString()
     firstName:string
@@ -10,7 +11,6 @@ export class CreateUSerDTO {
     @IsString()
     userName:string
 
-    
     @ApiProperty()
     @IsString()
     email:string
@@ -18,4 +18,8 @@ export class CreateUSerDTO {
     @ApiProperty()
     @IsString()
     password:string
+
+    @ApiProperty()
+    @IsString()
+    token:string
 }

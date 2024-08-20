@@ -28,6 +28,9 @@ export class UserService {
       }
     )
     return dto
-
   }
+
+  async publicUser(email:String){
+    return this.userRepository.findOne({where:{email}, attributes:{exclude:['password']}})
+}
 }
