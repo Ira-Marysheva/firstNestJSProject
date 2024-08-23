@@ -1,8 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {Injectable } from '@nestjs/common';
 import { User } from '../user/models/user.model';
 import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt'
-import { CreateUSerDTO } from './dto';
+import { CreateUSerDTO, UpdateUserDto } from './dto';
 
 @Injectable()
 export class UserService {
@@ -33,4 +33,14 @@ export class UserService {
   async publicUser(email:String){
     return this.userRepository.findOne({where:{email}, attributes:{exclude:['password']}})
 }
+
+  async updateUser(email:string, dto:UpdateUserDto){
+    await this.userRepository.update(dto, {where:{email}})
+    return dto
+  }requestAnimationFrame
+
+  async deleteUser(email:string){
+    await this.userRepository.destroy({where:{email}})
+    return true
+  }
 }
