@@ -22,7 +22,7 @@ export class WatchlistController {
   @UseGuards(JwtAuthGuard)
   @Post('create')
   createAsset(@Body() assetDTO: WatchlistDTO, @Req() request):Promise<CreateAssetResponse> {
-    const user = request.user;
+    const user = request.user.id;
     return this.watchlistService.createAsset(user, assetDTO);
   }
   

@@ -11,16 +11,25 @@ export class UserService {
     @InjectModel(User) private readonly userRepository: typeof User,
   ) {} //  додавання готоваої моделі у сервер
 
-  async hashPassword(password) {
-    return bcrypt.hash(password, 10);
+  async hashPassword(password:string):Promise<string> {
+    try {
+      return bcrypt.hash(password, 10);
+    } catch (err) {
+      throw new Error(err)
+    }
   }
 
-  async findUserByEmail(email: string) {
-    return this.userRepository.findOne({ where: { email } });
+  async findUserByEmail(email: string):Promise<User> {
+    try {
+      return this.userRepository.findOne({ where: { email } });
+    } catch (err) {
+      throw new Error(err)
+    }
   }
 
   async createUser(dto: CreateUSerDTO): Promise<CreateUSerDTO> {
-    dto.password = await this.hashPassword(dto.password);
+    try {
+      dto.password = await this.hashPassword(dto.password);
     // вирішення проблеми після длдавання типізації параметра і при створенні користувача
     await this.userRepository.create({
       firstName: dto.firstName,
@@ -29,10 +38,15 @@ export class UserService {
       password: dto.password,
     });
     return dto;
+    } catch (err) {
+      throw new Error(err)
+    }
+    
   }
 
-  async publicUser(email: String) {
-    return this.userRepository.findOne({
+  async publicUser(email: String):Promise<User> {
+    try {
+        return this.userRepository.findOne({
       where: { email },
       attributes: {
         exclude: ['password'],
@@ -42,16 +56,29 @@ export class UserService {
         required: false,
       },
     });
+    } catch (err) {
+      throw new Error(err)
+    }
+  
   }
 
-  async updateUser(email: string, dto: UpdateUserDto) {
-    await this.userRepository.update(dto, { where: { email } });
-    return dto;
+  async updateUser(email: string, dto: UpdateUserDto):Promise<UpdateUserDto> {
+    try {
+      await this.userRepository.update(dto, { where: { email } });
+      return dto;
+    } catch (err) {
+      throw new Error(err)
+    }
+    
   }
-  requestAnimationFrame;
 
   async deleteUser(email: string): Promise<boolean> {
-    await this.userRepository.destroy({ where: { email } });
-    return true;
+    try {
+      await this.userRepository.destroy({ where: { email } });
+      return true;
+    } catch (err) {
+      throw new Error(err)
+    }
+    
   }
 }
